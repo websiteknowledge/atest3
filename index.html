@@ -1,0 +1,43 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Request Free Item</title>
+</head>
+<body>
+    <h1>Request a Free Item</h1>
+    <form id="request-form">
+        <input type="text" id="userName" placeholder="Your Name" required>
+        <input type="text" id="itemName" placeholder="Item Name" required>
+        <button type="submit">Request Item</button>
+    </form>
+    <p id="response-message"></p>
+
+    <script>
+        document.getElementById('request-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const userName = document.getElementById('userName').value;
+            const itemName = document.getElementById('itemName').value;
+
+            fetch('http://localhost:3000/request-item', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userName, itemName }),
+            })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('response-message').innerText = data;
+                    document.getElementById('request-form').reset();
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+</body>
+</html>
